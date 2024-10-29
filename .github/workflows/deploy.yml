@@ -16,10 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug secrets
+        run: echo "PROD_TEST_ENV_CONST=${{ secrets.PROD_TEST_ENV_CONST }}"
+
       - name: Generate .env file
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo ${{ secrets.PROD_TEST_ENV_CONST }}
             # 本番環境の .env 生成
             echo "ENV_CONST=${{ secrets.PROD_TEST_ENV_CONST }}" > .env
           else
