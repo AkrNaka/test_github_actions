@@ -16,6 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Check if secret exists
+        run: |
+          if [ -z "${{ secrets.PROD_TEST_ENV_CONST }}" ]; then
+            echo "Secret PROD_TEST_ENV_CONST is not set or is empty."
+          else
+            echo "Secret PROD_TEST_ENV_CONST is set."
+          fi
+
       - name: Debug secrets
         run: echo "PROD_TEST_ENV_CONST=${{ secrets.PROD_TEST_ENV_CONST }}"
 
