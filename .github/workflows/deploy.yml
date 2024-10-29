@@ -23,10 +23,10 @@ jobs:
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             # 本番環境の .env 生成
-            echo "ENV_CONST=${{ secrets.PROD_TEST_ENV_CONST }}" > .env
+            echo "PROD_ENV_CONST=${{ secrets.PROD_TEST_ENV_CONST }}" > .env
           else
             # ステージング環境の .env 生成
-            echo "ENV_CONST=${{ secrets.DEV_TEST_ENV_CONST }}" > .env
+            echo "DEV_ENV_CONST=${{ secrets.DEV_TEST_ENV_CONST }}" > .env
           fi
           
       - name: Verify .env file
