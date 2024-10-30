@@ -21,3 +21,5 @@ jobs:
             sudo chown -R $USER:$USER .
             git config --global --add safe.directory "${{ secrets.DEPLOY_DIR }}"
             git pull origin main || echo "Git pull failed. Please check the repository and permissions."
+            touch .env
+            ecno ${{ secrets.PROD_TEST_ENV_CONST}} >> .env
