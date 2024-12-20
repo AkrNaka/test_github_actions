@@ -1,4 +1,4 @@
-name: CI
+name: CD
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@master #公式か確認
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
