@@ -1,8 +1,0 @@
-name: Hello # ワークフロー名（自由に指定可能）
-on: push # イベント（push, pull_requestなど）
-jobs: # ジョブの定義（複数指定可能）
-  hello:  # ジョブID（IDごとにするこを記述）
-    runs-on: ubuntu-latest # ランナー（windows、mac等も指定可能）
-    steps: # ステップの定義
-      - run: echo "Hello, world" # シェルコマンドの実行
-      - uses: actions/checkout@v4 # アクションの呼び出し

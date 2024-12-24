@@ -23,3 +23,11 @@ jobs:
             git pull origin main || echo "Git pull failed. Please check the repository and permissions."
             touch .env
             echo ${{ secrets.PROD_TEST_ENV_CONST}} >> .env
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          chmod u+x .github/scripts/test.sh
+          .github/scripts/test.sh
