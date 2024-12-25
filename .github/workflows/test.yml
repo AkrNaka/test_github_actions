@@ -30,10 +30,10 @@ jobs:
           # `refs/heads/` を取り除いてブランチ名のみを抽出
           branch_name=${branch_name#refs/heads/}
           
-          git diff --name-only origin/main..origin/$branch_name > diff_files.txt
+          git diff origin/main..origin/$branch_name > diff_files.txt
           cat diff_files.txt
           
-          grep -E "^\@\@" diff_output.txt
+          grep -E "^\@\@" diff_files.txt
 
       # PHP をセットアップ
       - name: Setup PHP
