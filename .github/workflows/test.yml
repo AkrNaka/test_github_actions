@@ -75,6 +75,10 @@ jobs:
             echo "changed_files=" >> $GITHUB_ENV
           fi
 
+          # 変更された行を保存したファイルを読み込む
+          while IFS=" : " read -r file line; do
+            echo "Processing file: $file, Line: $line"
+          done < changed_files.txt
 
       # 変更されたファイルを表示（デバッグ用）
       - name: Display modified files
