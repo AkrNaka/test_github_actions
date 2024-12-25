@@ -1,0 +1,72 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - feature/*
+    # 下記に変更があった場合のみ実行
+    paths:
+      - './product.php'
+      - '.github/workflows/test.yml'
+      - '.github/scripts/test01.sh'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
+
+      # 親ブランチ（main）の最新をフェッチ
+      - name: Fetch main branch
+        run: git fetch origin
+
+      # 差分の取得
+      - name: Get diff with main branch and extract line numbers
+        run: |
+          # ワークフローを起動したブランチを取得
+          branch_name=${{ github.ref }}
+          branch_name=${branch_name#refs/heads/}  # refs/heads/ を削除してブランチ名のみ取得
+
+          echo "Branch name: $branch_name"
+
+          # 差分を取得
+          git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
+
+          cat diff_output.txt
+          # ファイル名と行番号の抽出
+          echo "Changed lines in each file:"
+
+          # ファイル名を抽出
+          current_file=""
+
+          # `diff_output.txt` を行ごとに処理
+          while read line; do
+            # ファイル名を取得
+            if [[ $line =~ ^diff\ --git\ a/(.*)\ b/(.*) ]]; then
+              current_file="${BASH_REMATCH[2]}"
+            fi
+
+            # 変更行の行番号を取得
+            if [[ $line =~ ^\@\@ ]]; then
+              # 行番号を抽出
+              line_numbers=$(echo $line | sed -n 's/@@ -\([0-9]*\),[0-9]* \+[0-9]*,[0-9]* @@/\1/p')
+
+              # 結果を表示
+              echo "File: $current_file, Changed Line: $line_numbers"
+            fi
+          done < diff_output.txt
+
+      # PHP をセットアップ
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # 必要なPHPバージョンを指定
+          extensions: mbstring
+
+      # シェルスクリプトの実行
+      - name: Install PHP CodeSniffer and execute
+        run: |
+          chmod u+x .github/scripts/test01.sh
+          .github/scripts/test01.sh "./product.php"

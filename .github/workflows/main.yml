@@ -3,14 +3,16 @@ name: CD
 on:
   push:
     branches:
-      - main
+      - feature/*
+    paths:
+      - '.github/workflows/main.yml'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
-        uses: appleboy/ssh-action@master #公式か確認
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
@@ -21,8 +23,8 @@ jobs:
             sudo chown -R $USER:$USER .
             git config --global --add safe.directory "${{ secrets.DEPLOY_DIR }}"
             git pull origin main || echo "Git pull failed. Please check the repository and permissions."
-            touch .env
-            echo ${{ secrets.PROD_TEST_ENV_CONST}} >> .env
+#            touch .env
+#            echo ${{ secrets.PROD_TEST_ENV_CONST}} >> .env
 
   test:
     runs-on: ubuntu-latest
