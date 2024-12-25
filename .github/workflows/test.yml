@@ -39,5 +39,5 @@ jobs:
       # phpcs を実行してコードチェック
       - name: Run PHPCS
         run: |
-          ~/.composer/vendor/bin/phpcs ./product.php --standard=PSR12
+          ~/.composer/vendor/bin/phpcs ./product.php
 
