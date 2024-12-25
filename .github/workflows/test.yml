@@ -20,7 +20,7 @@ jobs:
 
       # 親ブランチ（main）の最新をフェッチ
       - name: Fetch main branch
-        run: git fetch --all
+        run: git fetch origin
 
       # 差分の取得
       - name: Get diff with parent branch
