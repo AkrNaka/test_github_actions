@@ -78,7 +78,7 @@ jobs:
           # 変更された行を保存したファイルを読み込む
           while IFS=" : " read -r file line; do
             echo "Processing file: $file, Line: $line"
-          done < changed_files.txt
+          done < echo "${{ env.changed_files }}"
 
       # 変更されたファイルを表示（デバッグ用）
       - name: Display modified files
