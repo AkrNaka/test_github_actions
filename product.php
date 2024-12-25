@@ -4,6 +4,7 @@ class Product
 {
     private $name;
     private $price;
+    // DIしたぜ
     public function __construct(NameInterface $name, PriceInterface $price)
     {
         $this->name = $name->getName();
@@ -44,11 +45,12 @@ class Price implements PriceInterface
     }
 }
 
+// プロパティのインスタンスか
 $name = new Name();
 $price = new Price();
 
 $product = new Product($name, $price);
 
 echo "インスタンス化の結果" . PHP_EOL;
-echo $product->getName() . PHP_EOL;
 echo $product->getPrice() . PHP_EOL;
+echo "インスタンス化の結果終わり" . PHP_EOL;
