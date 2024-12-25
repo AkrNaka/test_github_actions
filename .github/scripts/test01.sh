@@ -1,8 +1,11 @@
 #!/bin/sh
 
-ls
-pwd
-echo "testしてみたよ"
+# 引数を変数に代入
+$file=$1
+
+# phpcsのインストール
 composer global require "squizlabs/php_codesniffer=*"
-~/.composer/vendor/bin/phpcs ./product.php
+# phpcsの実行
+~/.composer/vendor/bin/phpcs $file
+
 exit 0

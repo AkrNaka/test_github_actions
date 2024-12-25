@@ -29,15 +29,4 @@ jobs:
       - name: Install PHP CodeSniffer and execute
         run: |
           chmod u+x .github/scripts/test01.sh
-          .github/scripts/test01.sh
-
-#      # PHP CodeSniffer (phpcs) をインストール
-#      - name: Install PHP CodeSniffer
-#        run: |
-#          composer global require "squizlabs/php_codesniffer=*"
-#
-#      # phpcs を実行してコードチェック
-#      - name: Run PHPCS
-#        run: |
-#          ~/.composer/vendor/bin/phpcs ./product.php
-
+          .github/scripts/test01.sh　'./product.php'
