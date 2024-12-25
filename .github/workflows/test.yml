@@ -25,12 +25,8 @@ jobs:
       # 差分の取得
       - name: Get diff with parent branch
         run: |
-          # 差分ファイル一覧を取得
-          git diff --name-only origin/main...HEAD > diff_files.txt
-
-          # 差分の中身を確認
-          echo "Changed files:"
-          cat diff_files.txt
+          git branch -r
+          git log --oneline --graph --all
 
       # PHP をセットアップ
       - name: Setup PHP
