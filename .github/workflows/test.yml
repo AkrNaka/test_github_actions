@@ -29,4 +29,4 @@ jobs:
       - name: Install PHP CodeSniffer and execute
         run: |
           chmod u+x .github/scripts/test01.sh
-          .github/scripts/test01.sh　./product.php
+          .github/scripts/test01.sh　"./product.php"
