@@ -5,7 +5,8 @@ on:
     branches:
       - feature/*
     paths:
-      - 'tmp.txt'
+      - '.github/workflows/main.yml'
+
 jobs:
   build:
     runs-on: ubuntu-latest
