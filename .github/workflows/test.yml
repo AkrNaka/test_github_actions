@@ -30,6 +30,8 @@ jobs:
           # `refs/heads/` を取り除いてブランチ名のみを抽出
           branch_name=${branch_name#refs/heads/}
           echo "Branch name: $branch_name"
+          git branch -r
+          
           
           git diff --name-only main...$branch_name > diff_files.txt
           cat diff_files.txt
