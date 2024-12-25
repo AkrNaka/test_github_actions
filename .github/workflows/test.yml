@@ -6,7 +6,7 @@ on:
       - feature/*
     # 下記に変更があった場合のみ実行
     paths:
-      - './product.php'
+      - 'product.php'
       - '.github/workflows/test.yml'
       - '.github/scripts/test01.sh'
 
