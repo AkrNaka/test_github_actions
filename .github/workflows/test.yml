@@ -34,6 +34,7 @@ jobs:
           # 差分を取得
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
 
+          cat diff_output.txt
           # ファイル名と行番号の抽出
           echo "Changed lines in each file:"
 
