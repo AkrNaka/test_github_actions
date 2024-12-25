@@ -23,17 +23,39 @@ jobs:
         run: git fetch origin
 
       # 差分の取得
-      - name: Get diff with parent branch
+      - name: Get diff with main branch and extract line numbers
         run: |
           # ワークフローを起動したブランチを取得
           branch_name=${{ github.ref }}
-          # `refs/heads/` を取り除いてブランチ名のみを抽出
-          branch_name=${branch_name#refs/heads/}
-          
-          git diff origin/main..origin/$branch_name > diff_files.txt
-          cat diff_files.txt
-          
-          grep -E "^\@\@" diff_files.txt
+          branch_name=${branch_name#refs/heads/}  # refs/heads/ を削除してブランチ名のみ取得
+
+          echo "Branch name: $branch_name"
+
+          # 差分を取得
+          git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
+
+          # ファイル名と行番号の抽出
+          echo "Changed lines in each file:"
+
+          # ファイル名を抽出
+          current_file=""
+
+          # `diff_output.txt` を行ごとに処理
+          while read line; do
+            # ファイル名を取得
+            if [[ $line =~ ^diff\ --git\ a/(.*)\ b/(.*) ]]; then
+              current_file="${BASH_REMATCH[2]}"
+            fi
+
+            # 変更行の行番号を取得
+            if [[ $line =~ ^\@\@ ]]; then
+              # 行番号を抽出
+              line_numbers=$(echo $line | sed -n 's/@@ -\([0-9]*\),[0-9]* \+[0-9]*,[0-9]* @@/\1/p')
+
+              # 結果を表示
+              echo "File: $current_file, Changed Line: $line_numbers"
+            fi
+          done < diff_output.txt
 
       # PHP をセットアップ
       - name: Setup PHP
