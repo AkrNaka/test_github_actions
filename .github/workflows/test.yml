@@ -34,7 +34,7 @@ jobs:
           git branch -r
           
           
-          git diff --name-only main...$branch_name > diff_files.txt
+          git diff --name-only origin/main...origin/$branch_name > diff_files.txt
           cat diff_files.txt
 
       # PHP をセットアップ
