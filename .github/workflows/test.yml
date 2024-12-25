@@ -33,6 +33,7 @@ jobs:
 
           # 差分を取得
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
+          
           # 初期化
           current_file=""
           
@@ -48,11 +49,10 @@ jobs:
               # @@ 行から変更行番号を抽出
               # 例: @@ -10,6 +10,7 @@ なら、10行目から始まり、6行変更
               # 行番号の部分を抽出
-              old_line=$(echo "$line" | sed -E 's/^@@ -([0-9]+),.* \+([0-9]+),.*/\1/')
-              new_line=$(echo "$line" | sed -E 's/^@@ -.* \+([0-9]+),.*/\1/')
+              added_lines=$(echo "$line" | sed -E 's/.*\+([0-9]+),([0-9]+).*/\1,\2/')
               
               # ファイル名と変更行を表示
-              echo "File: $current_file, Old Line: $old_line, New Line: $new_line"
+              echo "File: $current_file, Added Lines: $added_lines"
             fi
           done < diff_output.txt
 
