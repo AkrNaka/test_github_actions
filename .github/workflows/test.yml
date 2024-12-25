@@ -29,9 +29,8 @@ jobs:
           branch_name=${{ github.ref }}
           # `refs/heads/` を取り除いてブランチ名のみを抽出
           branch_name=${branch_name#refs/heads/}
-          echo "Branch name: $branch_name"
           
-          git diff origin/main..origin/$branch_name > diff_files.txt
+          git diff --name-only origin/main..origin/$branch_name > diff_files.txt
           cat diff_files.txt
 
       # PHP をセットアップ
