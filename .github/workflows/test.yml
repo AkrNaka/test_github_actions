@@ -7,6 +7,7 @@ on:
     paths:
       - './product.php'
       - '.github/workflows/test.yml'
+      - '.github/scripts/test.yml'
 
 jobs:
   test:
