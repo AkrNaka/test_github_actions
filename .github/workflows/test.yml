@@ -59,11 +59,11 @@ jobs:
                 count_line=$(echo "$added_lines" | cut -d',' -f2)
                 # 追加行の番号を連番で表示
                 for ((i=0; i<count_line; i++)); do
-                  echo "$file_name : $((start_line + i))" >> changed_files.txt
+                  echo "$file_name : $((start_line + i)) \n" >> changed_files.txt
                 done
               else
                 # 単一の行番号の場合
-                echo "$file_name : $added_lines" >> changed_files.txt
+                echo "$file_name : $added_lines \n" >> changed_files.txt
               fi
             fi
           done < diff_output.txt
