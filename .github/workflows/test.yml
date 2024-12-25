@@ -25,7 +25,13 @@ jobs:
       # 差分の取得
       - name: Get diff with parent branch
         run: |
-          git diff --name-only origin/main...HEAD > diff_files.txt
+          # ワークフローを起動したブランチを取得
+          branch_name=${{ github.ref }}
+          # `refs/heads/` を取り除いてブランチ名のみを抽出
+          branch_name=${branch_name#refs/heads/}
+          echo "Branch name: $branch_name"
+          
+          git diff --name-only origin/main...$branch_name > diff_files.txt
           cat diff_files.txt
 
       # PHP をセットアップ
