@@ -31,7 +31,7 @@ jobs:
           branch_name=${branch_name#refs/heads/}
           echo "Branch name: $branch_name"
           
-          git diff --name-only origin/main...$branch_name > diff_files.txt
+          git diff --name-only main...$branch_name > diff_files.txt
           cat diff_files.txt
 
       # PHP をセットアップ
