@@ -33,7 +33,7 @@ jobs:
 
           # 差分を取得
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
-          cat diff_output.txt
+          # cat diff_output.txt
           
           # 初期化
           current_file=""
