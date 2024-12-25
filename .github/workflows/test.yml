@@ -32,6 +32,8 @@ jobs:
           
           git diff --name-only origin/main..origin/$branch_name > diff_files.txt
           cat diff_files.txt
+          
+          grep -E "^\@\@" diff_output.txt
 
       # PHP をセットアップ
       - name: Setup PHP
