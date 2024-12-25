@@ -18,6 +18,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
 
+      # 親ブランチ（main）の最新をフェッチ
+      - name: Fetch main branch
+        run: git fetch origin main
+
+      # 差分の取得
+      - name: Get diff with parent branch
+        run: |
+          # 差分ファイル一覧を取得
+          git diff --name-only origin/main...HEAD > diff_files.txt
+
+          # 差分の中身を確認
+          echo "Changed files:"
+          cat diff_files.txt
+
       # PHP をセットアップ
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
