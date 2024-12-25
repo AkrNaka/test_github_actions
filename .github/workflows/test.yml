@@ -39,24 +39,31 @@ jobs:
           current_file=""
           
           # diff と @@ の行を解析
-          while IFS= read -r line; do
-            # 'diff' 行でファイル名を取得
-            if [[ "$line" =~ ^diff ]]; then
-              # ファイル名は 'a/ファイル名' と 'b/ファイル名' の形式で出力される
-              current_file=$(echo "$line" | sed 's|^diff --git a/\(.*\) b/\1|\1|')
-            
-            # '@@' 行で変更行番号を取得
-            elif [[ "$line" =~ ^@@ ]]; then
-              # @@ 行から変更行番号を抽出
-              # 例: @@ -10,6 +10,7 @@ なら、10行目から始まり、6行変更
-              # 行番号の部分を抽出
-              added_lines=$(echo "$line" | sed -E 's/.*\+([0-9]+),([0-9]+).*/\1,\2/;s/.*\+([0-9]+).*/\1/')
-          
-              # ファイル名と変更行を表示
-              echo "File: $current_file, Added Lines: $added_lines"
-            fi
-          done < diff_output.txt
-
+            while IFS= read -r line; do
+              # '@@' 行からファイル名と新しい行番号（+以降の部分）を抽出
+              if [[ "$line" =~ ^@@ ]]; then
+                # ファイル名と行番号の取得
+                # 例えば、'@@ -46,0 +48 @@' から '48' を取り出す
+                file_name=$(echo "$line" | sed -E 's/^.*diff --git a\/(.*) b\/.*$/\1/')
+                
+                # 追加された行番号を取り出す（カンマ区切りも対応）
+                added_lines=$(echo "$line" | sed -E 's/.*\+([0-9]+),([0-9]+).*/\1,\2/;s/.*\+([0-9]+).*/\1/')
+                
+                # 行番号がカンマ区切り（複数行）の場合、行番号を分割して1行ずつ表示
+                if [[ "$added_lines" =~ , ]]; then
+                  # カンマで区切られた行番号を分割
+                  start_line=$(echo "$added_lines" | cut -d',' -f1)
+                  count_line=$(echo "$added_lines" | cut -d',' -f2)
+                  # 追加行の番号を連番で表示
+                  for ((i=0; i<count_line; i++)); do
+                    echo "File: $file_name, Added Line: $((start_line + i))"
+                  done
+                else
+                  # 単一の行番号の場合
+                  echo "File: $file_name, Added Line: $added_lines"
+                fi
+              fi
+            done < diff_output.txt
 
       # PHP をセットアップ
       - name: Setup PHP
