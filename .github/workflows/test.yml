@@ -20,13 +20,13 @@ jobs:
 
       # 親ブランチ（main）の最新をフェッチ
       - name: Fetch main branch
-        run: git fetch origin main
+        run: git fetch --all
 
       # 差分の取得
       - name: Get diff with parent branch
         run: |
-          git branch -r
-          git log --oneline --graph --all
+          git diff --name-only origin/main...HEAD > diff_files.txt
+          cat diff_files.txt
 
       # PHP をセットアップ
       - name: Setup PHP
