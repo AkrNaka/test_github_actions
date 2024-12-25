@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/*
+    # 下記に変更があった場合のみ実行
     paths:
       - './product.php'
       - '.github/workflows/test.yml'
@@ -13,9 +14,30 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # リポジトリのチェックアウト
       - name: Checkout repository
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
+
+      # シェルスクリプトの実行
       - name: test
         run: |
           chmod u+x .github/scripts/test01.sh
           .github/scripts/test01.sh
+
+      # PHP をセットアップ
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # 必要なPHPバージョンを指定
+          extensions: mbstring
+
+      # PHP CodeSniffer (phpcs) をインストール
+      - name: Install PHP CodeSniffer
+        run: |
+          composer global require "squizlabs/php_codesniffer=*"
+
+      # phpcs を実行してコードチェック
+      - name: Run PHPCS
+        run: |
+          ~/.composer/vendor/bin/phpcs ./product.php --standard=PSR12
+
