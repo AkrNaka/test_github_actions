@@ -2,23 +2,25 @@
 
 class Product
 {
-    private $name;
-    private $price;
+    private string $name;
+    private float $price;
     public function __construct(NameInterface $name, PriceInterface $price)
     {
         $this->name = $name->getName();
         $this->price = $price->getPrice();
     }
-    public function getName() {
+    public function getName(): string
+    {
         return $this->name;
     }
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 }
 
-interface NameInterface {
+interface NameInterface
+{
     public function getName(): string;
 }
 
