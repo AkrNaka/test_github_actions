@@ -35,6 +35,7 @@ jobs:
 
           # 差分を取得（mainとワークフローを起動したブランチの比較）
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
+          cat diff_output.txt
           
           # 変更ファイルリストの作成
           touch changed_files.txt
