@@ -12,7 +12,7 @@ for line in $changed_files; do
   file=$(echo "$line" | cut -d':' -f1)
   line_num=$(echo "$line" | cut -d':' -f2)
 
-  ~/.composer/vendor/bin/phpcs --standard=PSR12 $file
+  ~/.composer/vendor/bin/phpcs --standard=PSR12 $file > tmp.txt
 
   if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
     echo "Error detected on line $line_num in file $file"
@@ -22,12 +22,9 @@ for line in $changed_files; do
   fi
 done
 
-cat tmp.txt
-
 # エラーが発生していた場合、ジョブを失敗として終了
 if [ "$failed" = true ]; then
   echo "PHP CodeSniffer found issues on modified lines."
-  cat tmp.txt
   cat a.txt
   # ワークフローをエラーとして終了
   exit 1
