@@ -25,8 +25,8 @@ jobs:
       # 差分の取得
       - name: Get diff with main branch and extract line numbers
         run: |
-          chmod u+x .github/scripts/checkDiff.sh
-          .github/scripts/checkDiff.sh ${{ github.ref }}
+          chmod u+x .github/scripts/getDiff.sh
+          .github/scripts/getDiff.sh ${{ github.ref }}
 
       # 変更されたファイルを表示（デバッグ用）
       - name: Display modified files
@@ -41,46 +41,17 @@ jobs:
           php-version: '8.2' # 必要なPHPバージョンを指定
           extensions: mbstring
 
+      - name: Install PHP CodeSniffer
+        run: |
+          # phpcsのインストール
+          composer global require "squizlabs/php_codesniffer=*"
+
       # 変更されたファイルに対して PHP_CodeSniffer を実行
       - name: Run PHP CodeSniffer on specific lines
         if: env.changed_files != ''
         run: |
+          # シェルスクリプトに実行権限を付与
+          chmod u+x .github/scripts/checkSource.sh
+
           # 変更ファイルおよび行を変数に入れる
-          changed_files="${{ env.changed_files }}"
-
-          # エラーフラグ
-          failed=false
-          
-          # phpcsのインストール
-          composer global require "squizlabs/php_codesniffer=*"
-          
-          chmod u+x .github/scripts/test01.sh
-
-          # 変更行ごとにループ
-          for line in $changed_files; do
-            # ファイル名と行番号を分割
-            file=$(echo "$line" | cut -d':' -f1)
-            line_num=$(echo "$line" | cut -d':' -f2)
-          
-            .github/scripts/test01.sh $file
-          
-            if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
-              echo "Error detected on line $line_num in file $file"
-              echo "$file:$line_num" >> a.txt
-              grep "^[ ]\{1,2\}$line_num |" tmp.txt >> a.txt
-              failed=true
-            fi
-          done
-          
-          cat tmp.txt
-          
-          # エラーが発生していた場合、ジョブを失敗として終了
-          if [ "$failed" = true ]; then
-            echo "PHP CodeSniffer found issues on modified lines."
-            cat tmp.txt
-            cat a.txt
-            # ワークフローをエラーとして終了
-            exit 1
-          else
-            echo "No issues found in modified lines."
-          fi
+          .github/scripts/checkSource.sh "${{ env.changed_files }}"

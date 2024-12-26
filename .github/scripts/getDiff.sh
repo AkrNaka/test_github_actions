@@ -6,8 +6,6 @@ branch_name=$1
 # refs/heads/ を削除してブランチ名のみ取得
 branch_name=${branch_name#refs/heads/}
 
-echo "Branch name: $branch_name"
-
 # 差分を取得（mainとワークフローを起動したブランチの比較）
 git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
 
