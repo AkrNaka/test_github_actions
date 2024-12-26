@@ -1,10 +1,11 @@
 <?php
 
-class product
+class Product
 {
     private string $name;
     private float $price;
-    public function __construct(NameInterface $name, PriceInterface $price) {
+    public function __construct(NameInterface $name, PriceInterface $price)
+    {
         $this->name = $name->getName();
         $this->price = $price->getPrice();
     }
