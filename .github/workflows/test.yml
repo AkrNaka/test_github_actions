@@ -52,8 +52,7 @@ jobs:
         run: |
           # 変更ファイル:行を変数に代入
           changed_files="${{ env.changed_files }}"
-          echo $changed_files
           
           # シェルスクリプトに実行権限を付与
           chmod u+x .github/scripts/checkSource.sh
-          .github/scripts/checkSource.sh $changed_files
+          .github/scripts/checkSource.sh "$changed_files"
