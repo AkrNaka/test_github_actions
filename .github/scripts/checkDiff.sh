@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 引数を変数に代入
 branch_name=$1
