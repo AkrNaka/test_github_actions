@@ -11,11 +11,8 @@ for line in $changed_files; do
   # ファイル名と行番号を分割
   file=$(echo "$line" | cut -d':' -f1)
   line_num=$(echo "$line" | cut -d':' -f2)
-  echo "$file:$line_num"
 
   ~/.composer/vendor/bin/phpcs --standard=PSR12 $file > tmp.txt
-
-  cat tmp.txt
 
   if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
     echo "Error detected on line $line_num in file $file"
