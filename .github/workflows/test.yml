@@ -27,14 +27,16 @@ jobs:
         run: |
           # ワークフローを起動したブランチを取得
           branch_name=${{ github.ref }}
-          branch_name=${branch_name#refs/heads/}  # refs/heads/ を削除してブランチ名のみ取得
+          
+          # refs/heads/ を削除してブランチ名のみ取得
+          branch_name=${branch_name#refs/heads/}
 
           echo "Branch name: $branch_name"
 
-          # 差分を取得
+          # 差分を取得（mainとワークフローを起動したブランチの比較）
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
-          # cat diff_output.txt
           
+          # 変更ファイルリストの作成
           touch changed_files.txt
                     
           # diff と @@ の行を解析
@@ -67,6 +69,8 @@ jobs:
               fi
             fi
           done < diff_output.txt
+          
+          cat -n changed_files.txt
           
           # 変更ファイルが存在する場合は、環境変数に設定
           if [ -s changed_files.txt ]; then
