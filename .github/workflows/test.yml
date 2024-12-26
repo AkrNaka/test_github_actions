@@ -130,6 +130,7 @@ jobs:
           # エラーが発生していた場合、ジョブを失敗として終了
           if [ "$failed" = true ]; then
             echo "PHP CodeSniffer found issues on modified lines."
+            cat tmp.txt
             cat a.txt
             # ワークフローをエラーとして終了
             exit 1
