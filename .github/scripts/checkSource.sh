@@ -15,6 +15,8 @@ for line in $changed_files; do
 
   ~/.composer/vendor/bin/phpcs --standard=PSR12 $file > tmp.txt
 
+  cat tmp.txt
+
   if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
     echo "Error detected on line $line_num in file $file"
     echo "$file:$line_num" >> a.txt
