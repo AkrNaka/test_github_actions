@@ -2,11 +2,9 @@
 
 class Product
 {
-    private $name;
+    private $_name;
     private $price;
-    // DIしたぜ
-    public function __construct(NameInterface $name, PriceInterface $price)
-    {
+    public function __construct(NameInterface $name, PriceInterface $price) {
         $this->name = $name->getName();
         $this->price = $price->getPrice();
     }
