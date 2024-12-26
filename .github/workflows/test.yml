@@ -50,8 +50,8 @@ jobs:
       - name: Run PHP CodeSniffer on specific lines
         if: env.changed_files != ''
         run: |
+          # 変更ファイル:行を変数に代入
+          changed_files="${{ env.changed_files }}"
           # シェルスクリプトに実行権限を付与
           chmod u+x .github/scripts/checkSource.sh
-
-          # 変更ファイルおよび行を変数に入れる
-          .github/scripts/checkSource.sh "${{ env.changed_files }}"
+          .github/scripts/checkSource.sh $changed_files
