@@ -2,14 +2,14 @@
 
 class Product
 {
-    private $_name;
+    private $name;
     private $price;
-    public function __construct(NameInterface $name, PriceInterface $price) {
+    public function __construct(NameInterface $name, PriceInterface $price)
+    {
         $this->name = $name->getName();
         $this->price = $price->getPrice();
     }
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
     public function getPrice()
@@ -18,8 +18,7 @@ class Product
     }
 }
 
-interface NameInterface
-{
+interface NameInterface {
     public function getName(): string;
 }
 
