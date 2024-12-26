@@ -35,7 +35,6 @@ jobs:
 
           # 差分を取得（mainとワークフローを起動したブランチの比較）
           git diff --unified=0 origin/main..origin/$branch_name > diff_output.txt
-          cat diff_output.txt
           
           # 変更ファイルリストの作成
           touch changed_files.txt
@@ -117,7 +116,6 @@ jobs:
             # ファイル名と行番号を分割
             file=$(echo "$line" | cut -d':' -f1)
             line_num=$(echo "$line" | cut -d':' -f2)
-            echo "Processing file: $file (line: $line_num)"
           
             .github/scripts/test01.sh $file
           
@@ -129,8 +127,6 @@ jobs:
             fi
           done
           
-          cat tmp.txt
-
           # エラーが発生していた場合、ジョブを失敗として終了
           if [ "$failed" = true ]; then
             echo "PHP CodeSniffer found issues on modified lines."
