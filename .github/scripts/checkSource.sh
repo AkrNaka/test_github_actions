@@ -12,8 +12,6 @@ for line in $changed_files; do
   file=$(echo "$line" | cut -d':' -f1)
   line_num=$(echo "$line" | cut -d':' -f2)
 
-  echo $line
-
   ~/.composer/vendor/bin/phpcs --standard=PSR12 $file
 
   if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
