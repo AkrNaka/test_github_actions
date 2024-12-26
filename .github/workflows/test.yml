@@ -104,7 +104,12 @@ jobs:
           changed_files="${{ env.changed_files }}"
 
           # エラーフラグ
-          # failed=false
+          failed=false
+          
+          # phpcsのインストール
+          composer global require "squizlabs/php_codesniffer=*"
+          
+          chmod u+x .github/scripts/test01.sh
 
           # 変更行ごとにループ
           for line in $changed_files; do
@@ -112,23 +117,24 @@ jobs:
             file=$(echo "$line" | cut -d':' -f1)
             line_num=$(echo "$line" | cut -d':' -f2)
             echo "Processing file: $file (line: $line_num)"
-
-            # 対象の行番号にエラーがあるか確認
-            #if grep -q "^[ ]\{1,2\}$line_num |" phpcs_result.txt; then
-            #  echo "Error detected on line $line_num in file $file"
-            #  echo "$file:$line_num" >> a.txt
-            #  grep "^[ ]\{1,2\}$line_num |" phpcs_result.txt >> a.txt
-            #  failed=true
-            #fi
+          
+            .github/scripts/test01.sh $file
+          
+            if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
+              echo "Error detected on line $line_num in file $file"
+              echo "$file:$line_num" >> a.txt
+              grep "^[ ]\{1,2\}$line_num |" tmp.txt >> a.txt
+              failed=true
+            fi
           done
 
           # エラーが発生していた場合、ジョブを失敗として終了
-          #if [ "$failed" = true ]; then
-          #  echo "PHP CodeSniffer found issues on modified lines."
-          #  cat phpcs_result.txt
-          #  cat a.txt
+          if [ "$failed" = true ]; then
+            echo "PHP CodeSniffer found issues on modified lines."
+            cat tmp.txt
+            cat a.txt
             # ワークフローをエラーとして終了
-          #  exit 1
-          #else
-          #  echo "No issues found in modified lines."
-          #fi
+            exit 1
+          else
+            echo "No issues found in modified lines."
+          fi
