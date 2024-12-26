@@ -12,20 +12,22 @@ for line in $changed_files; do
   file=$(echo "$line" | cut -d':' -f1)
   line_num=$(echo "$line" | cut -d':' -f2)
 
-  ~/.composer/vendor/bin/phpcs --standard=PSR12 $file > tmp.txt
+  # phpcs実行（phpcsをインストールしたディレクトリの指定が必要）
+  ~/.composer/vendor/bin/phpcs --standard=PSR12 $file > phpcs.txt
 
-  if grep -q "^[ ]\{1,2\}$line_num |" tmp.txt; then
+  # phpcsでエラーが返ってきた時、行数が一致する部分でエラーが出ていれば抽出
+  if grep -q "^[ ]\{1,2\}$line_num |" phpcs.txt; then
     echo "Error detected on line $line_num in file $file"
-    echo "$file:$line_num" >> a.txt
-    grep "^[ ]\{1,2\}$line_num |" tmp.txt >> a.txt
+    echo "$file:$line_num" >> result.txt
+    grep "^[ ]\{1,2\}$line_num |" phpcs.txt >> result.txt
     failed=true
   fi
 done
 
-# エラーが発生していた場合、ジョブを失敗として終了
+# 更新行でエラーが発生していた場合、ジョブを失敗として終了
 if [ "$failed" = true ]; then
   echo "PHP CodeSniffer found issues on modified lines."
-  cat a.txt
+  cat result.txt
   # ワークフローをエラーとして終了
   exit 1
 else
