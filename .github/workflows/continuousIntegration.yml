@@ -1,4 +1,4 @@
-name: CD
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     # 下記に変更があった場合のみ実行
     paths:
       - 'product.php'
-      - '.github/workflows/test.yml'
+      - '.github/workflows/continuousIntegration.yml'
       - '.github/scripts/*'
 
 jobs:
